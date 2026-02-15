@@ -122,6 +122,14 @@ The backend is deployed on Render.com with the following configuration:
 - **Start Command:** `npm start`
 - **Environment Variables:** `NODE_ENV`, `FRONTEND_URL`, `PORT`
 
+## 💡 Project Approach
+
+This application uses a full-stack architecture with React/Vite frontend and Node.js/Express backend. The core approach leverages MobileNet v1, a pre-trained deep learning model, to extract visual features from uploaded images. I pre-computed embeddings for all 50 products during build time and stored them in JSON format for fast retrieval.
+
+When users upload an image or provide a URL, the system validates inputs, resizes images to 224x224 pixels, converts them to tensors using Canvas API, and extracts features. These features are compared with product embeddings using cosine similarity, which provides normalized scores ideal for high-dimensional vectors. Results are ranked by similarity score, returning the top 20 matches.
+
+Key technical decisions included choosing MobileNet for efficiency, implementing pre-computed embeddings to optimize performance, and using cosine similarity for accurate matching. Deployment presented a challenge: Vercel's serverless functions don't support TensorFlow.js with native dependencies. I solved this by deploying the backend to Render.com (full Node.js environment) while keeping the frontend on Vercel for optimal CDN delivery. The application includes comprehensive testing with Jest and React Testing Library.
+
 ## 🎯 How It Works
 
 1. **Image Upload**: User uploads an image or provides a URL
